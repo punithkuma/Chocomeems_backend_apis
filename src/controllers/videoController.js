@@ -10,14 +10,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Store videos in ./uploads
+// Absolute path to /uploads
+const uploadPath = path.join(__dirname, "../../uploads");
+
+// Create folder if not exists
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../../uploads'));
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, unique + path.extname(file.originalname));
-  }
+  },
 });
 const upload = multer({ storage, limits: { fileSize: 1024 * 1024 * 500 } }); // 500MB limit
 
