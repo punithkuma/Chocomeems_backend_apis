@@ -35,7 +35,6 @@ const uploadMiddleware = upload.single('video');
 
 async function uploadVideo(req, res) {
   try {
-    console.log("req",req)
     if (!req.file) return res.status(400).json({ error: "Missing video file" });
 
     const { title, description, courseId } = req.body;
